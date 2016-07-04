@@ -1,12 +1,21 @@
-﻿<Window x:Class="tvcheck_wpf.MainWindow"
+﻿<Window x:Name="MainWindow1" x:Class="tvcheck_wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:tvcheck_wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="TV Checker WPF 0.0.1" Height="350" Width="768">
+    <Grid Margin="0,0,2,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="generalTree" Margin="10,30,379,10"/>
+        <Menu x:Name="menu" Height="20" VerticalAlignment="Top">
+            <MenuItem x:Name="Series" Header="Series">
+                <MenuItem x:Name="refreshMenu" Header="Refresh" Click="refreshMenu_Click"/>
+            </MenuItem>
+        </Menu>
+
     </Grid>
 </Window>

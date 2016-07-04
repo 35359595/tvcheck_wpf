@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace tvcheck_wpf
 {
@@ -20,9 +9,107 @@ namespace tvcheck_wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static string[] URLs = new string[] { "http://fs.to/flist/i1JyOT1po21gODTFfZEmkdq?folder=870916&quality=hdrip" };
+
+        private List<Series> GlobalSeries = null;
         public MainWindow()
         {
             InitializeComponent();
+            RefreshAllFromServer();
+            FillTheTree();
+        }
+
+        private void refreshMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshAllFromServer();
+            FillTheTree();
+        }
+
+        private void RefreshAllFromServer()
+        {
+            List<Series> allResults = new List<Series>();
+            
+            foreach (string url in URLs)
+            {
+                Series currentSeries = new Series();
+                string[] episodesList = new string[] { };
+                using (WebClient client = new WebClient())
+                {
+                    episodesList = client.DownloadString(url).Split();
+                }
+                currentSeries.Name = episodesList[0].Substring(50);
+                currentSeries.SetUrl(url);
+                currentSeries.SetEpisodes(episodesList);
+
+                allResults.Add(currentSeries);
+            }
+            GlobalSeries = allResults;
+        }
+
+        private void FillTheTree()
+        {
+            foreach (Series currentSeries in GlobalSeries)
+            {
+                generalTree.ItemsSource = currentSeries.GetEpisodesNames();
+            }
+        }
+    }
+
+    public class Series
+    {
+        private string _name;
+
+        private string _url;
+
+        public string Name {
+            get {
+                return _name;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    _name = value;
+            }
+        }
+        private string URL {
+            get
+            {
+                return _url;
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    _url = value;
+            }
+        }
+        
+        private string[] Episodes { get; set; }
+        public string GetUrl()
+        {
+            return this.URL;
+        }
+        public void SetUrl(string url)
+        {
+            this.URL = url;
+        }
+        public string[] GetEpisodes()
+        {
+            return this.Episodes;
+        }
+        public string[] GetEpisodesNames()
+        {
+            List<string> names = new List<string> { };
+            foreach (string name in this.Episodes)
+            {
+                int slashIndex = name.LastIndexOf("/");
+                if (slashIndex > 0)
+                    names.Add(name.Substring(slashIndex + 1).Replace("."," "));
+            }
+            return names.ToArray();
+        }
+        public void SetEpisodes(string[] list)
+        {
+            this.Episodes = list;
         }
     }
 }
