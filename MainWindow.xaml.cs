@@ -38,8 +38,8 @@ namespace tvcheck_wpf
                     episodesList = client.DownloadString(url).Split();
                 }
                 currentSeries.Name = episodesList[0].Substring(50);
-                currentSeries.SetUrl(url);
-                currentSeries.SetEpisodes(episodesList);
+                currentSeries.Url = url;
+                currentSeries.Episodes = episodesList;
 
                 allResults.Add(currentSeries);
             }
@@ -73,7 +73,7 @@ namespace tvcheck_wpf
                     _name = value;
             }
         }
-        public string URL {
+        public string Url {
             get
             {
                 return _url;
@@ -88,21 +88,13 @@ namespace tvcheck_wpf
         public string[] Episodes {
             get
             {
-                return this._episodes;
+                return _episodes;
             }
              set
             {
                 if (!string.IsNullOrEmpty(value.ToString()))
                     _episodes = value;
             }
-        }
-        public string GetUrl()
-        {
-            return this.URL;
-        }
-        public void SetUrl(string url)
-        {
-            this.URL = url;
         }
         public string[] GetEpisodesNames() //returns list of episodes in human readable format
         {
