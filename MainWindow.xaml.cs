@@ -73,7 +73,7 @@ namespace tvcheck_wpf
                     _name = value;
             }
         }
-        private string URL {
+        public string URL {
             get
             {
                 return _url;
@@ -104,11 +104,7 @@ namespace tvcheck_wpf
         {
             this.URL = url;
         }
-        public string[] GetEpisodes()
-        {
-            return this.Episodes;
-        }
-        public string[] GetEpisodesNames()
+        public string[] GetEpisodesNames() //returns list of episodes in human readable format
         {
             List<string> names = new List<string> { };
             foreach (string name in this.Episodes)
@@ -118,10 +114,6 @@ namespace tvcheck_wpf
                     names.Add(name.Substring(slashIndex + 1).Replace("."," "));
             }
             return names.ToArray();
-        }
-        public void SetEpisodes(string[] list)
-        {
-            this.Episodes = list;
         }
     }
 }
