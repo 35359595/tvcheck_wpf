@@ -61,6 +61,8 @@ namespace tvcheck_wpf
 
         private string _url;
 
+        private string[] _episodes;
+
         public string Name {
             get {
                 return _name;
@@ -83,7 +85,17 @@ namespace tvcheck_wpf
             }
         }
         
-        private string[] Episodes { get; set; }
+        public string[] Episodes {
+            get
+            {
+                return this._episodes;
+            }
+             set
+            {
+                if (!string.IsNullOrEmpty(value.ToString()))
+                    _episodes = value;
+            }
+        }
         public string GetUrl()
         {
             return this.URL;
